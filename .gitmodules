@@ -1,3 +1,0 @@
-[submodule "src/cl-fuseki"]
-	path = src/cl-fuseki
-	url = https://github.com/dbym4820/cl-fuseki.git

@@ -16,10 +16,10 @@
 	       :cl-ppcre)
   :components ((:module "src"
                 :components
-                ((:file "cl-ignition")
-		 (:module "cl-fuseki"
-		  :components
-		  ((:file "cl-fuseki"))))))
+                ((:file "cl-ignition" :depends-on ("query" "request" "fuseki"))
+		 (:file "query" :depends-on ("fuseki"))
+		 (:file "request" :depends-on ("query"))
+		 (:file "fuseki"))))
   :description "CLOS based SPARQL query generation library"
   :long-description
   #.(with-open-file (stream (merge-pathnames

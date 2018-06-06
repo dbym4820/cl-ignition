@@ -9,6 +9,8 @@
 
 (plan nil)
 
-;; blah blah blah.
+(setf *enable-colors* nil)
+
+;;(subtest "query-generation test")
 
 (finalize)

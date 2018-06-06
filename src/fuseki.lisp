@@ -1,4 +1,8 @@
-(in-package :cl-ignition)
+;;;; this source code get from madnificent/cl-fuseki
+(in-package :cl-user)
+(defpackage ignitor/fuseki
+  (:use :cl :drakma :cl-ppcre :jsown)
+  (:export :query))
 
 (defun s+ (&rest strings)
   "Concatenates a set of strings"
@@ -345,7 +349,7 @@
                    (format nil ,@format))
            ,@options))
 
-(defmacro delete (repository (&rest options)
+(defmacro fuseki-delete (repository (&rest options)
                   &body format)
   `(update ,repository
            (s+ "DELETE DATA { "
