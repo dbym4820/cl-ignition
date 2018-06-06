@@ -1,12 +1,3 @@
-#|
-  This file is a part of cl-ignition project.
-  Copyright (c) 2018 Tomoki Aburatnai (aburatanitomoki@gmail.com)
-|#
-
-#|
-  Author: Tomoki Aburatnai (aburatanitomoki@gmail.com)
-|#
-
 (in-package :cl-user)
 (defpackage cl-ignition-asd
   (:use :cl :asdf))
@@ -16,14 +7,17 @@
   :version "0.1"
   :author "Tomoki Aburatnai"
   :license "MIT"
-  :depends-on ()
+  :depends-on (:cl-ppcre
+	       :dexador
+	       :jonathan
+	       :cl-fuseki)
   :components ((:module "src"
                 :components
                 ((:file "cl-ignition"))))
-  :description ""
+  :description "CLOS based SPARQL query generation library"
   :long-description
   #.(with-open-file (stream (merge-pathnames
-                             #p"README.markdown"
+                             #p"README.md"
                              (or *load-pathname* *compile-file-pathname*))
                             :if-does-not-exist nil
                             :direction :input)
