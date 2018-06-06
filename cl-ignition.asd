@@ -7,13 +7,19 @@
   :version "0.1"
   :author "Tomoki Aburatnai"
   :license "MIT"
-  :depends-on (:cl-ppcre
+  :depends-on (:optima
 	       :dexador
 	       :jonathan
-	       :cl-fuseki)
+	       ;;; for cl-fuseki
+	       :jsown
+	       :drakma
+	       :cl-ppcre)
   :components ((:module "src"
                 :components
-                ((:file "cl-ignition"))))
+                ((:file "cl-ignition"))
+		(:module "cl-fuseki"
+		 :components
+		 ((:file :cl-fuseki)))))
   :description "CLOS based SPARQL query generation library"
   :long-description
   #.(with-open-file (stream (merge-pathnames
