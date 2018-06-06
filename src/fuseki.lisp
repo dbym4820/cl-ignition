@@ -1,8 +1,9 @@
 ;;;; this source code get from madnificent/cl-fuseki
 (in-package :cl-user)
-(defpackage ignitor/fuseki
+(defpackage cl-ignition.fuseki
   (:use :cl :drakma :cl-ppcre :jsown)
   (:export :query))
+(in-package :cl-ignition.fuseki)
 
 (defun s+ (&rest strings)
   "Concatenates a set of strings"
