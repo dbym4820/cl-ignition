@@ -19,9 +19,9 @@
                 :components
                 ((:file "cl-ignition" :depends-on ("query" "request" "fuseki"))
 		 (:file "query" :depends-on ("fuseki"))
-		 (:file "request" :depends-on ("query"))
+		 (:file "request" :depends-on ("fuseki" "query"))
 		 (:file "fuseki"))))
-  :description "CLOS based SPARQL query generation library"
+  :description "Common Lisp SPARQL library"
   :long-description
   #.(with-open-file (stream (merge-pathnames
                              #p"README.md"

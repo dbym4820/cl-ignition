@@ -1,52 +1,12 @@
-# cl-ignition - Common Lisp SPARQL query generation library
+# cl-ignition - Yet another Common Lisp SPARQL library
 
 ## Status
 
-- Just launched
-
-## Usage
-
-Generate SPARQL query from S-expression of Common Lisp.
-
-(Ideal state: not implemented yet)
-
-### Query Generation
-
-```
-CL-USER> (ql:quickload :cl-ignition :silent t)
-CL-USER> (defparameter *sample-query*
-           (ignitor:make-query
-              ((prefix 'dbpedia-jp "<http://ja.dbpedia.org/resource/>")
-               (prefix 'example "<http://example.org/>"))
-	          (select (?p ?o)
-	                    (where (and (dbpedia-jp "東京都") ?p ?o))
-	                    (limit 10))))
-*SAMPLE-QUERY*
-CL-USER> *sample-query*
-;; => "PREFIX dbpedia-jp:   <http://ja.dbpedia.org/resource/>
-;;     PREFIX example:      <http://example.org/>"
-;;     SELECT ?p ?o WHERE { dbpedia:東京都 ?p ?o } LIMIT 10"
-```
-
-### Send Requst
-```
-CL-USER> (defparameter *sparql-endpoint* (ignitor:make-endpoint "http://ja.dbpedia.org/sparql"))
-CL-USER> (send-query *sample-query* *sparql-endpoint*)
-#| =>
-(((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://www.w3.org/2002/07/owl#Thing"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://dbpedia.org/ontology/%3Chttp://purl.org/dc/terms/Jurisdiction%3E"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://dbpedia.org/ontology/AdministrativeRegion"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://dbpedia.org/ontology/Location"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://dbpedia.org/ontology/Place"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://dbpedia.org/ontology/PopulatedPlace"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://dbpedia.org/ontology/Region"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://schema.org/AdministrativeArea"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://schema.org/Place"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://www.wikidata.org/entity/Q3455524")))
-|#
-```
-
-### 
+- Select
+    - [X] basic
+    - [X] limit
+    - [ ] filter
+- Graph
 
 ## Installation
 
@@ -55,6 +15,7 @@ CL-USER> (send-query *sample-query* *sparql-endpoint*)
 ~ $ cd /path/to/quicklisp/local-projects/
 ~ $ git clone https://github.com/dbym4820/cl-ignition.git
 ```
+
 - Install via quicklisp 
 
 ```
@@ -65,6 +26,38 @@ To load "cl-ignition":
 ; Loading "cl-ignition"
 ..
 (:CL-IGNITION)
+```
+
+## Usage
+
+Generate SPARQL request as S-expression on Common Lisp.
+
+### Query Generation
+
+```
+;; e.g.: get 5 data which has the URI "http://ja.dbpedia.org/resource/冴えない彼女の育てかた" as subject parameter from DBpedia Japan
+CL-USER> (ql:quickload :cl-ignition :silent t)
+CL-USER> (defparameter *sample-query*
+           (ignitor:with-prefix (val)
+                ((dbpedia-jp "http://ja.dbpedia.org/resource/"))
+                ((:select (nil ?p ?o)
+                    :distinct t
+                    :subject (dbpedia-jp "冴えない彼女の育てかた")
+                    :limit 5))
+         (ignitor:convert-query val)))
+*SAMPLE-QUERY*
+CL-USER> *SAMPLE-QUERY*
+"select distinct ?P ?O where { <http://ja.dbpedia.org/resource/冴えない彼女の育てかた> ?P ?O limit 5 . }"
+CL-USER> (defparameter *dbpedia-server*
+           (make-instance 'cl-ignition.fuseki:virtuoso-repository 
+              :name "DBpedia Japanese"
+              :server (make-instance 'cl-ignition.fuseki:virtuoso-server
+                         :base-url "http://ja.dbpedia.org/sparql")))
+*DBPEDIA-SERVER*
+CL-USER> *dbpedia-server*
+#<CL-IGNITION.FUSEKI:VIRTUOSO-REPOSITORY #x3020022966DD>
+CL-USER> (cl-ignition.fuseki:query *dbpedia-server* *sample-query*)
+
 ```
 
 ## Author

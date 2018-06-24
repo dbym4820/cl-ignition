@@ -1,36 +1,17 @@
 (in-package :cl-user)
 (ql:quickload :cl-ignition)
 
-#| Simaple SPARQL Query
-PREFIX dbpedia-jp:   <http://ja.dbpedia.org/resource/>
-SELECT ?p ?o WHERE { dbpedia:東京都 ?p ?o } LIMIT 10
-|#
-(ignitor:with-query (?p ?o)
-  ((prefixs 'dbpedia-jp "<http://ja.dbpedia.org/resource/>"
-	    'example "<http://example.org/>")            
-   (select (?p ?o)
-	   (where (and (dbpedia-jp "東京都") ?p ?o))
-	   (limit 1)))
-  (format nil "~A, ~A~%" ?p ?o))
-=> "\"http://www.w3.org/1999/02/22-rdf-syntax-ns#typ", \"http://www.w3.org/2002/07/owl#Thing\"
+(defun saekano-dbpedia ()
+  (ignitor:request-dbpedia "select distinct * where { <http://ja.dbpedia.org/resource/冴えない彼女の育てかた> ?p ?o } LIMIT 10"))
 
-(defparameter *sparql-endpoint* (make-endpoint "http://ja.dbpedia.org/sparql"))
-(defparameter *sample-query*
-  (ignitor:make-query
-   (select (?p ?o)
-	   (where (and (dbpedia-jp "東京都") ?p ?o))
-	   (limit 10))))
-;;; => #<CL-IGNITION.QUERY:QUERY-IGNITOR #x30200233AFBD>
-(send-query *sample-query* *sparql-endpoint*)
-#| =>
-(((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://www.w3.org/2002/07/owl#Thing"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://dbpedia.org/ontology/%3Chttp://purl.org/dc/terms/Jurisdiction%3E"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://dbpedia.org/ontology/AdministrativeRegion"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://dbpedia.org/ontology/Location"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://dbpedia.org/ontology/Place"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://dbpedia.org/ontology/PopulatedPlace"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://dbpedia.org/ontology/Region"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://schema.org/AdministrativeArea"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://schema.org/Place"))
- ((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://www.wikidata.org/entity/Q3455524")))
-|#
+(defun anime-list-dbpedia ()
+  (ignitor:request-dbpedia "select distinct * where { ?s ?p <http://dbpedia.org/ontology/Cartoon> } LIMIT 10"))
+
+(defun saekano-2 ()
+  (ignitor:with-prefix (val)
+		       ((dbpedia-jp "http://ja.dbpedia.org/resource/"))
+		       ((:select (nil ?p ?o)
+			 :distinct t
+			 :subject (dbpedia-jp "冴えない彼女の育てかた")
+			 :limit 5))
+    (ignitor:request-dbpedia (ignitor:convert-query val))))
