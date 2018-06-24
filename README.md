@@ -1,6 +1,7 @@
 # cl-ignition - Yet another Common Lisp SPARQL library
 
 Generate SPARQL request as S-expression on Common Lisp.
+Almost all process are homaged to [madnificent/cl-fuseki](https://github.com/madnificent/cl-fuseki)
 
 ## Status
 
@@ -9,6 +10,12 @@ Generate SPARQL request as S-expression on Common Lisp.
     - [X] limit
     - [ ] filter
 - Graph
+
+### future vision
+
+- Remove dependency of cl-fuseki
+- To comply with the W3C statement
+
 
 ## Installation
 
