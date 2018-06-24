@@ -1,5 +1,7 @@
 # cl-ignition - Yet another Common Lisp SPARQL library
 
+Generate SPARQL request as S-expression on Common Lisp.
+
 ## Status
 
 - Select
@@ -30,13 +32,13 @@ To load "cl-ignition":
 
 ## Usage
 
-Generate SPARQL request as S-expression on Common Lisp.
+e.g.: get 5 data which has the URI "http://ja.dbpedia.org/resource/冴えない彼女の育てかた" as subject parameter from DBpedia Japan
 
 ### Query Generation
 
+usage of with-prefix and convert-query macro
+
 ```
-;; e.g.: get 5 data which has the URI "http://ja.dbpedia.org/resource/冴えない彼女の育てかた" as subject parameter from DBpedia Japan
-CL-USER> (ql:quickload :cl-ignition :silent t)
 CL-USER> (defparameter *sample-query*
            (ignitor:with-prefix (val)
                 ((dbpedia-jp "http://ja.dbpedia.org/resource/"))
@@ -48,6 +50,11 @@ CL-USER> (defparameter *sample-query*
 *SAMPLE-QUERY*
 CL-USER> *SAMPLE-QUERY*
 "select distinct ?P ?O where { <http://ja.dbpedia.org/resource/冴えない彼女の育てかた> ?P ?O limit 5 . }"
+```
+
+### Setting Server(Sparql repository)
+
+```
 CL-USER> (defparameter *dbpedia-server*
            (make-instance 'cl-ignition.fuseki:virtuoso-repository 
               :name "DBpedia Japanese"
@@ -56,6 +63,11 @@ CL-USER> (defparameter *dbpedia-server*
 *DBPEDIA-SERVER*
 CL-USER> *dbpedia-server*
 #<CL-IGNITION.FUSEKI:VIRTUOSO-REPOSITORY #x3020022966DD>
+```
+
+### Request Query
+
+```
 CL-USER> (cl-ignition.fuseki:query *dbpedia-server* *sample-query*)
 ;; =>
 ((:OBJ ("P" :OBJ ("type" . "uri") 
@@ -78,7 +90,11 @@ CL-USER> (cl-ignition.fuseki:query *dbpedia-server* *sample-query*)
 		     ("value" . "http://www.w3.org/1999/02/22-rdf-syntax-ns#type")) 
 	   ("O" :OBJ ("type" . "uri") 
 		     ("value" . "http://schema.org/CreativeWork"))))
+```
 
+### Include whole process in with-prefix
+
+```
 CL-USER>  (ignitor:with-prefix (val)
 			       ((dbpedia-jp "http://ja.dbpedia.org/resource/"))
 			       ((:select (nil ?p ?o)
@@ -123,5 +139,5 @@ Licensed under the MIT License.
 
 ## Reference
 
-[W3C SPARQL query (English)](https://www.w3.org/TR/rdf-sparql-query/)
-[W3C SPARQL query (Japanese)](http://www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/rdf-sparql-query.html)
+-[W3C SPARQL query (English)](https://www.w3.org/TR/rdf-sparql-query/)
+-[W3C SPARQL query (Japanese)](http://www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/rdf-sparql-query.html)
