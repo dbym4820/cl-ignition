@@ -1,4 +1,4 @@
-# cl-ignition - CLOS based SPARQL query generation library
+# cl-ignition - Common Lisp SPARQL query generation library
 
 ## Status
 
@@ -10,32 +10,27 @@ Generate SPARQL query from S-expression of Common Lisp.
 
 (Ideal state: not implemented yet)
 
-### Query generation
+### Query Generation
 
 ```
-CL-USER> (ql:quickload :cl-ignition)
-
-#| Simaple SPARQL Query
-PREFIX dbpedia-jp:   <http://ja.dbpedia.org/resource/>
-SELECT ?p ?o WHERE { dbpedia:東京都 ?p ?o } LIMIT 10
-|#
-CL-USER> (ignitor:with-query (?p ?o)
-           ((prefixs 'dbpedia-jp "<http://ja.dbpedia.org/resource/>"
-	                 'example "<http://example.org/>")            
-            (select (?p ?o)
-	                 (where (and (dbpedia-jp "東京都") ?p ?o))
-	                 (limit 1)))
-           (format nil "~A, ~A~%" ?p ?o))
-;; => "\"http://www.w3.org/1999/02/22-rdf-syntax-ns#typ", \"http://www.w3.org/2002/07/owl#Thing\"
-
-CL-USER> (defparameter *sparql-endpoint* (ignitor:make-endpoint "http://ja.dbpedia.org/sparql"))
+CL-USER> (ql:quickload :cl-ignition :silent t)
 CL-USER> (defparameter *sample-query*
            (ignitor:make-query
-                (select (?p ?o)
-	                      (where (and (dbpedia-jp "東京都") ?p ?o))
-	                      (limit 10))))
-;;; => #<CL-IGNITION.QUERY:QUERY-IGNITOR #x30200233AFBD>
+              ((prefix 'dbpedia-jp "<http://ja.dbpedia.org/resource/>")
+               (prefix 'example "<http://example.org/>"))
+	          (select (?p ?o)
+	                    (where (and (dbpedia-jp "東京都") ?p ?o))
+	                    (limit 10))))
+*SAMPLE-QUERY*
+CL-USER> *sample-query*
+;; => "PREFIX dbpedia-jp:   <http://ja.dbpedia.org/resource/>
+;;     PREFIX example:      <http://example.org/>"
+;;     SELECT ?p ?o WHERE { dbpedia:東京都 ?p ?o } LIMIT 10"
+```
 
+### Send Requst
+```
+CL-USER> (defparameter *sparql-endpoint* (ignitor:make-endpoint "http://ja.dbpedia.org/sparql"))
 CL-USER> (send-query *sample-query* *sparql-endpoint*)
 #| =>
 (((p "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") (o "http://www.w3.org/2002/07/owl#Thing"))

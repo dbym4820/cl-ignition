@@ -2,7 +2,9 @@
 (in-package :cl-user)
 (defpackage cl-ignition.fuseki
   (:use :cl :drakma :cl-ppcre :jsown)
-  (:export :query))
+  (:export :query
+           :virtuoso-repository
+	   :virtuoso-server))
 (in-package :cl-ignition.fuseki)
 
 (defun s+ (&rest strings)

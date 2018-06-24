@@ -11,6 +11,7 @@
 	       :dexador
 	       :jonathan
 	       ;;; for cl-fuseki
+	       :alexandria
 	       :jsown
 	       :drakma
 	       :cl-ppcre)
