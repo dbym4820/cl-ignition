@@ -73,8 +73,8 @@
 			 (obj-var
 			  (format nil "~A " obj-var))
 			 (t "?O "))
-		   (when lim (format nil "limit ~A " lim))
-		   ". }"))))
+		   "} "
+		   (when lim (format nil "limit ~A " lim))))))
 
 (defmacro get-proper (proper query)
   "extract property value from query list"
