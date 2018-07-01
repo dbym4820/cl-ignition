@@ -27,10 +27,9 @@ exec ros -Q -- $0 "$@"
 
 (defun main (&rest argv)
   (declare (ignorable argv))
-  (cond ((string= (first argv "comment"))
+  (cond ((string= (first argv) "comment")
 	 (format t "~A~%" (get-comment (second argv))))
 	(t (format t "invalid argument format"))))
-	 
 	
 )
 ;;; vim: set ft=lisp lisp:
