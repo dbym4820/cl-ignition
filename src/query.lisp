@@ -8,7 +8,9 @@
 		:property)
   (:export :with-prefix
 	   :ensure-query
-	   :select :vars :distinct :?s :?p :?o :limit))
+	   :select :vars :distinct :?s :?p :?o :limit
+	   :val :lang :data-type
+           :extract-key-value :result-filter :get-single-key))
 (in-package :cl-ignition.query)
 
 
@@ -128,3 +130,36 @@
 	  (cl-ignition.query::convert-query v))))
   (cl-ignition.fuseki:query query))
 |#
+
+(defclass result-data ()
+  ((data-type :initarg :data-type :accessor data-type)
+   (lang :initarg :lang :accessor lang)
+   (val :initarg :val :accessor val)))
+
+(defun make-result-data (type lang val)
+  (make-instance 'result-data :data-type type :lang lang :val val))
+
+(defun extract-key-value (data)
+  (mapcar #'(lambda (d)
+	      (mapcar #'(lambda (d1)
+			  (let ((single-data (cddr d1)))
+			    (cons (first d1)
+				  (make-result-data
+				   (cdr (assoc "type" single-data :test #'string=))
+				   (or (cdr (assoc "xml:lang" single-data :test #'string=)) "en")
+				   (cdr (assoc "value" single-data :test #'string=))))))
+			  (cdr d)))
+	  data))
+
+(defun result-filter (retrieve-property-list data-list) ;; ("O")
+  (loop for x in data-list
+	collect (mapcar #'(lambda (d)
+			    (assoc d x :test #'string=))
+			retrieve-property-list)))
+
+(defun get-single-key (property data)
+  (loop for y in (result-filter `(,property) (extract-key-value data))
+	collect (mapcar #'(lambda (d)
+			    (val (cdr d)))
+			 y)))
+;;(cl-ignition.query::extract-key-vale (saekano-2))

@@ -6,7 +6,8 @@
 		:with-prefix
 		:ensure-query
 		:convert-query
-		:select :vars :distinct :?s :?p :?o :limit)
+		:select :vars :distinct :?s :?p :?o :limit
+                :extract-key-value :result-filter :get-single-key)
   (:import-from :cl-ignition.request
 		:send-request
 		:sparql-server :server-instance
@@ -30,6 +31,9 @@
    :?p
    :?o
    :limit
+   :extract-key-value
+   :result-filter
+   :get-single-key
    ;; request
    :sparql-server
    :make-sparql-server
