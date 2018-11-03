@@ -1,6 +1,6 @@
 (in-package :cl-user)
 (defpackage cl-ignition
-  (:nicknames :ignitor)
+  (:nicknames :ignition)
   (:use :cl)
   (:import-from :cl-ignition.query
 		:with-prefix
@@ -45,3 +45,4 @@
    :virtuoso-server
    :query))
 (in-package :cl-ignition)
+

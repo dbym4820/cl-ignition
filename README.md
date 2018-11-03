@@ -1,7 +1,7 @@
-# cl-ignition - Yet another Common Lisp SPARQL library
+# cl-ignition - Common Lisp SPARQL library
 
 Generate SPARQL request as S-expression on Common Lisp.
-Almost all process are homaged to [madnificent/cl-fuseki](https://github.com/madnificent/cl-fuseki)
+Most process are homaged to [madnificent/cl-fuseki](https://github.com/madnificent/cl-fuseki)
 
 ## Status
 
@@ -15,7 +15,6 @@ Almost all process are homaged to [madnificent/cl-fuseki](https://github.com/mad
 
 - Remove dependency of cl-fuseki
 - To comply with the W3C statement
-
 
 ## Installation
 

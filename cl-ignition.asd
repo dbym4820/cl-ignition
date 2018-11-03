@@ -10,8 +10,9 @@
   :depends-on (:optima
 	       :dexador
 	       :jonathan
-	       ;;; for cl-fuseki
 	       :alexandria
+	       :utsushiyo
+	       ;;; for cl-fuseki
 	       :jsown
 	       :drakma
 	       :cl-ppcre)
@@ -24,7 +25,7 @@
   :description "Common Lisp SPARQL library"
   :long-description
   #.(with-open-file (stream (merge-pathnames
-                             #p"README.md"
+                             #P"README.md"
                              (or *load-pathname* *compile-file-pathname*))
                             :if-does-not-exist nil
                             :direction :input)

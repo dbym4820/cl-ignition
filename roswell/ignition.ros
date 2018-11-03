@@ -1,0 +1,35 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp (ql:quickload '(cl-ignition utsushiyo) :silent t))
+
+(defpackage :ros.script.cl-ignition
+  (:use :cl :cl-ignition :utsushiyo))
+(in-package :ros.script.cl-ignition)
+
+
+(defun get-comment (resource-name)
+  (ignition:with-prefix (val)
+  		       ((dbpedia-jp "http://ja.dbpedia.org/resource/")
+  			(rdf-schema "http://www.w3.org/2000/01/rdf-schema"))
+  		       ((:select (nil ?p ?o)
+  			 :distinct t
+  			 :subject (dbpedia-jp resource-name)
+  			 :predicate (rdf-schema "#comment")))
+    (caar
+     (cl-ignition.query::get-single-key "O"
+  					(ignition:request-dbpedia
+  					 (ignition:convert-query val))))))
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (cond ((string= (first argv) "comment")
+	 (format t "~A~%" (get-comment (second argv))))
+	((string= (first argv) "init")
+	 (utsushiyo:project-config-bootstrap "cl-ignition"))
+	(t (format t "invalid argument format"))))
+;;; vim: set ft=lisp lisp:

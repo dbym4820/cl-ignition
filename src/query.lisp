@@ -124,7 +124,7 @@
 
 #|
 (let ((query
-	(ignitor:with-prefix (v) ((dbp "http://dbpedia.ja/resource/"))
+	(ignition:with-prefix (v) ((dbp "http://dbpedia.ja/resource/"))
 			     ((:select (nil ?p nil)
 			       :subject (dbp "冴えない彼女の育てかた")))
 	  (cl-ignition.query::convert-query v))))
@@ -163,3 +163,16 @@
 			    (val (cdr d)))
 			 y)))
 ;;(cl-ignition.query::extract-key-vale (saekano-2))
+
+;; (defun a (retrieve-keyword)
+;;   (with-prefix (val)
+;; 	       ((dbpedia-jp "http://ja.dbpedia.org/resource/")
+;; 		(rdf-schema "http://www.w3.org/2000/01/rdf-schema"))
+;; 	       ((:select (nil ?p ?o)
+;; 		 :distinct t
+;; 		 :subject (dbpedia-jp retrieve-keyword)
+;; 		 :predicate (rdf-schema "#comment")))
+;;     (get-single-key "O"
+;; 		    (request-dbpedia
+;; 		     (convert-query val)))))
+
