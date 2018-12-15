@@ -9,6 +9,7 @@ Most process are homaged to [madnificent/cl-fuseki](https://github.com/madnifice
     - [X] basic
     - [X] limit
     - [ ] filter
+- Insert
 - Graph
 
 ### future vision
@@ -46,13 +47,13 @@ usage of with-prefix and convert-query macro
 
 ```
 CL-USER> (defparameter *sample-query*
-           (ignitor:with-prefix (val)
+           (cl-ignition:with-prefix (val)
                 ((dbpedia-jp "http://ja.dbpedia.org/resource/"))
                 ((:select (nil ?p ?o)
                     :distinct t
                     :subject (dbpedia-jp "冴えない彼女の育てかた")
                     :limit 5))
-         (ignitor:convert-query val)))
+         (cl-ignition:convert-query val)))
 *SAMPLE-QUERY*
 CL-USER> *SAMPLE-QUERY*
 "select distinct ?P ?O where { <http://ja.dbpedia.org/resource/冴えない彼女の育てかた> ?P ?O limit 5 . }"
@@ -101,13 +102,13 @@ CL-USER> (cl-ignition.fuseki:query *dbpedia-server* *sample-query*)
 ### Include whole process in with-prefix
 
 ```
-CL-USER>  (ignitor:with-prefix (val)
+CL-USER>  (cl-ignition:with-prefix (val)
 			       ((dbpedia-jp "http://ja.dbpedia.org/resource/"))
 			       ((:select (nil ?p ?o)
 				 :distinct t
 				 :subject (dbpedia-jp "冴えない彼女の育てかた")
 				 :limit 5))
-	    (ignitor:request-dbpedia (ignitor:convert-query val)))
+	    (cl-ignition:request-dbpedia (cl-ignition:convert-query val)))
 ;; =>
 ((:OBJ ("P" :OBJ ("type" . "uri") 
              ("value" . "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"))

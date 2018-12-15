@@ -109,8 +109,21 @@
   (:method ((server sparql-server))
     (string-conc `(,(url server) ,(server-upload-endpoint-postfix server)))))
 
-(defgeneric send-query (sparql-server string)
+(defgeneric send-query (sparql-server query-string)
   (:method ((server virtuoso-server) (query-string string))
-    (dex:post (query-endpoint server)
-	     :content `(("format" ,(get-data-type :json))
-			("query" ,query-string)))))
+    ;; (jonathan:parse
+    ;;  (babel:octets-to-string
+      (dex:post (query-endpoint server)
+		:force-binary nil
+		:content
+		`(("format" . ,(get-data-type :rdfxml))
+		  ("query" . ,query-string)))
+    ;;      :encoding :utf-8))
+    ))
+
+
+(defvar *dbpedia-server*
+  (make-instance 'virtuoso-server :url "http://ja.dbpedia.org"))
+
+
+
