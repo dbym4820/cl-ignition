@@ -32,15 +32,17 @@
 					(cl-ignition:request-dbpedia
 					 (cl-ignition:convert-query val))))))
 
-(defun get-abstruct (resource-name)
+(defun get-abstract (resource-name)
   (cl-ignition:with-prefix (val)
 		       ((dbpedia-jp "http://ja.dbpedia.org/resource/")
-			(rdf-schema "http://www.w3.org/2000/01/rdf-schema"))
+			(rdf-schema "http://www.w3.org/2000/01/rdf-schema")
+			(ontology "http://dbpedia.org/ontology/"))
 		       ((:select (nil ?p ?o)
 			 :distinct t
 			 :subject (dbpedia-jp resource-name)
-			 :predicate (rdf-schema "#comment")))
+			 :predicate (ontology "abstract")))
     (caar
      (cl-ignition.query::get-single-key "O"
 					(cl-ignition:request-dbpedia
 					 (cl-ignition:convert-query val))))))
+
