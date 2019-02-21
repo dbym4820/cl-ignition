@@ -19,6 +19,10 @@
                 :query
 		:virtuoso-repository
 		:virtuoso-server)
+  (:import-from :cl-ignition.dbpedia
+		:export :get-comment
+                :get-abstract
+		:get-wiki-links)
   (:export
    ;; query
    :with-prefix
@@ -43,6 +47,11 @@
    ;; fuseki
    :virtuoso-repository
    :virtuoso-server
-   :query))
+   :query
+   ;; dbpedia
+   :get-comment
+   :get-abstract
+   :get-wiki-links
+))
 (in-package :cl-ignition)
 

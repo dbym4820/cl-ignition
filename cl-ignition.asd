@@ -18,7 +18,8 @@
 	       :cl-ppcre)
   :components ((:module "src"
                 :components
-                ((:file "cl-ignition" :depends-on ("query" "request" "fuseki"))
+                ((:file "cl-ignition" :depends-on ("query" "request" "fuseki" "dbpedia"))
+		 (:file "dbpedia" :depends-on ("query" "request" "fuseki"))
 		 (:file "query" :depends-on ("fuseki"))
 		 (:file "request" :depends-on ("fuseki" "query"))
 		 (:file "fuseki"))))

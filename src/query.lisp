@@ -158,7 +158,9 @@
 			    (assoc d x :test #'string=))
 			retrieve-property-list)))
 
+
 (defun get-single-key (property data)
+  "extract single key's values"
   (loop for y in (result-filter `(,property) (extract-key-value data))
 	collect (mapcar #'(lambda (d)
 			    (val (cdr d)))
