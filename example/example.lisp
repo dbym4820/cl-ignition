@@ -46,3 +46,17 @@
 					(cl-ignition:request-dbpedia
 					 (cl-ignition:convert-query val))))))
 
+
+
+(defun get-wiki-links (resource-name)
+  (cl-ignition:with-prefix (val)
+		       ((dbpedia-jp "http://ja.dbpedia.org/resource/")
+			(wiki-link "http://dbpedia.org/ontology/wikiPageWikiLink"))
+		       ((:select (nil nil ?o)
+			 :distinct t
+			 :subject (dbpedia-jp resource-name)
+			 :predicate (wiki-link "")))
+    (caar
+     (cl-ignition.query::get-single-key "O"
+					(cl-ignition:request-dbpedia
+					 (cl-ignition:convert-query val))))))

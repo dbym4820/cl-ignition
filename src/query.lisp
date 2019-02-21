@@ -91,7 +91,8 @@
 
 (defun query-variable-list-p (var)
   (when (and (listp var)
-	     (not (null var)))
+	     (not (null var))
+	     (not (string= "" (second var))))
     (let ((?-count (count-if #'(lambda (has-?-or-not)
 				 (eq has-?-or-not t))
 			     (mapcar #'(lambda (d)
